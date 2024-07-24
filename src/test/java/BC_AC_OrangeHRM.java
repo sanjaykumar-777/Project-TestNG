@@ -4,29 +4,29 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 import utility.HighLighter;
 
 import java.time.Duration;
 
-
-public class BM_AM_OrangeHRM {
+public class BC_AC_OrangeHRM {
     WebDriver driver;
 
-    @BeforeMethod
-    public void setUp() {
-        System.setProperty("webdriver.chrome.driver","/Users/sanjaykumar/Desktop/UiAutomation/src/drivers/chromedriver");
+    @BeforeClass
+    public void setup() {
+        System.setProperty("webdriver.chrome.driver", "/Users/sanjaykumar/Desktop/UiAutomation/src/drivers/chromedriver");
         driver = new ChromeDriver();
-        //automatically setup chromedriver
-//        WebDriverManager.chromedriver().setup();
+
         driver.manage().window().maximize();
 
         driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
-        System.out.println("1. Open Chrome & Application");
+        System.out.println("1. Open chrome & Application");
 
     }
 
-    @Test(priority = 1)
+    @Test
     public void signIn() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement textUserName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='username']")));
@@ -45,9 +45,8 @@ public class BM_AM_OrangeHRM {
 
     }
 
-    @Test(priority = 2, dependsOnMethods = {"signIn"})
-    public void userSearch ()
-    {
+    @Test
+    public void userSearch() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement menuAdmin = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Admin']")));
 //        WebElement menuAdmin = driver.findElement(By.xpath("(//a[@class='oxd-main-menu-item active'])[1]"));
@@ -67,27 +66,31 @@ public class BM_AM_OrangeHRM {
         System.out.println("3. Search For User");
     }
 
-    @Test(priority = 3, dependsOnMethods = {"userSearch"})
-    public void userSignOut ()
-    {
+    @Test
+    public void userSignOut() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement userDropDown = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@class='oxd-userdropdown-name']")));
         userDropDown.click();
 
+//        WebElement linkWelcome = driver.findElement(By.id("welcome"));
+//        HighLighter.highlightElement(driver, linkWelcome);
+//        linkWelcome.click();
+
         WebElement linkLogout = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[normalize-space()='Logout']")));
         HighLighter.highlightElement(driver,linkLogout);
         linkLogout.click();
+//        WebElement linkLogout = driver.findElement(By.xpath("//div[@id='welcome-menu']/descendant::a[contains(@href,'logout')]"));
+//        HighLighter.highlightElement(driver, linkLogout);
+//        linkLogout.click();
+
+        //a[normalize-space()='Logout']
 
         System.out.println("4. Sign Out");
     }
 
-    @AfterMethod
-    public void tearDown ()
-    {
+    @AfterClass
+    public void tearDown() {
         System.out.println("5. Close Chrome & Application");
         driver.quit();
     }
-
-
-
 }
